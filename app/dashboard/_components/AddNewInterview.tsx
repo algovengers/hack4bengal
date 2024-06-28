@@ -12,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { chatSession } from "@/utils/GeminiAi";
 import { LoaderCircle } from "lucide-react";
-import { db } from "@/utils/db";
 import { MockInterview, MockInterviewType } from "@/utils/schema";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { createInterview } from "@/actions/interview";
 
 const AddNewInterview = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -65,11 +65,11 @@ const AddNewInterview = () => {
       createdAt: moment().format('DD-MM-yyyy')
     };
     if(MockJsonResp) {
-    const resp = await db.insert(MockInterview).values(data).returning({mockId:MockInterview.mockId});
-    console.log("Inserted id", resp);
-    if(resp) {
+    const {result} = await createInterview(JSON.stringify(data));
+    console.log("Inserted id", result);
+    if(result) {
       setOpenDialog(false);
-      router.push('/dashboard/interview/'+resp[0]?.mockId);
+      router.push('/dashboard/interview/'+result[0]?.mockId);
     }
     } else {
       console.log("error");

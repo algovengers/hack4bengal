@@ -1,14 +1,15 @@
 "use client";
+import { updateAnswer } from "@/actions/answer";
+import { InterviewContext } from "@/app/dashboard/layout";
 import { Button } from "@/components/ui/button";
 import { chatSession } from "@/utils/GeminiAi";
-import { db } from "@/utils/db";
 import { MockInterviewType, UserAnswer, UserAnswerType } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
 import { Mic } from "lucide-react";
 import moment from "moment";
 import { actionAsyncStorage } from "next/dist/client/components/action-async-storage-instance";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import Webcam from "react-webcam";
 import { toast } from "sonner";
@@ -19,11 +20,6 @@ interface ResultType {
   timestamp: number;
 }
 
-interface RecordSectionProps {
-  mockInterviewQuestion: MockInterviewQuestion[];
-  activeQuestionIndex: number;
-  interviewData: InterviewData | null;
-}
 
 interface MockInterviewQuestion {
   id: string;
@@ -31,7 +27,7 @@ interface MockInterviewQuestion {
   answer: string;
 }
 
-interface InterviewData {
+export interface InterviewData {
   id: number;
   jsonMockResp: string;
   jobPosition: string;
@@ -42,11 +38,8 @@ interface InterviewData {
   mockId: string;
 }
 
-const RecordSection: React.FC<RecordSectionProps> = ({
-  mockInterviewQuestion,
-  activeQuestionIndex,
-  interviewData,
-}) => {
+const RecordSection: React.FC = () => {
+  const {mockInterviewQuestion,activeQuestionIndex,interviewData} = useContext(InterviewContext)
   const [userAnswer, setUserAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
@@ -121,13 +114,20 @@ const RecordSection: React.FC<RecordSectionProps> = ({
         createdAt: moment().format("DD-MM-yyyy"),
       };
 
-      const resp = await db.insert(UserAnswer).values(data);
+     try {
+      console.log("Here")
+       const resp = await updateAnswer(JSON.stringify(data));
+      console.log(resp)
 
-      if (resp) {
-        toast("Answer recorded successfully.");
-        setUserAnswer('');
-        setResults([]);
-      }
+       if (resp) {
+         toast("Answer recorded successfully.");
+         setUserAnswer('');
+         setResults([]);
+       }
+ 
+     } catch (error) {
+      console.log(error)
+     }
       setResults([]);
       setLoading(false);
   }

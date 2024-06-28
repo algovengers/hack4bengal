@@ -1,20 +1,16 @@
 "use client";
+import { InterviewContext } from "@/app/dashboard/layout";
 import { Lightbulb, Volume2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
-interface QuestionSectionProps {
-  mockInterviewQuestion: MockInterviewQuestion[];
-  activeQuestionIndex: number;
-}
+
 
 interface MockInterviewQuestion {
   id: string;
   question: string;
 }
-const QuestionSection: React.FC<QuestionSectionProps> = ({
-  mockInterviewQuestion,
-  activeQuestionIndex,
-}) => {
+const QuestionSection: React.FC = () => {
+  const {mockInterviewQuestion,activeQuestionIndex} = useContext(InterviewContext)
   const textToSpeech = (text: string) => {
     if ("speechSynthesis" in window) {
       const speech = new SpeechSynthesisUtterance(text);

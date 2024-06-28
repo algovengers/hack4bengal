@@ -1,6 +1,6 @@
 "use client";
+import { getInterviewDetails } from "@/actions/dashboard";
 import { Button } from "@/components/ui/button";
-import { db } from "@/utils/db";
 import { MockInterview } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { Lightbulb, WebcamIcon } from "lucide-react";
@@ -35,13 +35,14 @@ const Interview: React.FC<InterviewProps> = ({ params }) => {
   }, []);
 
   const GetInterViewDetails = async () => {
-    const result = await db
-      .select()
-      .from(MockInterview)
-      .where(eq(MockInterview.mockId, params.interviewId));
+    try {
+      const {result} = await getInterviewDetails(params.interviewId)
+      setInterviewData(result[0]);
+    } catch (error) {
+      console.log(error)
+    }
 
     // console.log(result);
-    setInterviewData(result[0]);
   };
 
   return (

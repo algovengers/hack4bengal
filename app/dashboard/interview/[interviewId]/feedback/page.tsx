@@ -1,6 +1,5 @@
 "use client";
 
-import { db } from "@/utils/db";
 import { UserAnswer } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getFeedback } from "@/actions/feedback";
 
 interface FeedbackProps {
   params: {
@@ -42,14 +42,14 @@ const Feedback: React.FC<FeedbackProps> = ({ params }) => {
   }, []);
 
   const GetFeedback = async () => {
-    const result = await db
-      .select()
-      .from(UserAnswer)
-      .where(eq(UserAnswer.mockIdref, params.interviewId))
-      .orderBy(UserAnswer.id);
-
-    console.log(result);
-    setFeedbackList(result);
+   try {
+     const {result} = await getFeedback(params.interviewId)
+ 
+     console.log(result);
+     setFeedbackList(result);
+   } catch (error) {
+    alert("something went wrong")
+   }
   };
 
   return (
