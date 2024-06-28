@@ -18,6 +18,7 @@ import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { createInterview } from "@/actions/interview";
+import { toast } from "sonner";
 
 const AddNewInterview = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -27,7 +28,6 @@ const AddNewInterview = () => {
     undefined
   );
   const [loading, setLoading] = useState(false);
-  const [jsonResponse, setJsonResponse] = useState([]);
 
   const { user } = useUser();
   const router = useRouter();
@@ -35,46 +35,29 @@ const AddNewInterview = () => {
   const onSubmit = async (e: any) => {
     setLoading(true);
     e.preventDefault();
-
-    const InputPrompt =
-      "Job position: " +
-      jobPosition +
-      ", Job Description :" +
-      jobDesc +
-      ", Years of Experience : " +
-      jobExperience +
-      ", Depends on Job Position, Job Description, and Year of experience give us " +
-      process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT +
-      "most asked interview questions along with answer in json format. Give the question and answer field in json format.";
-
-    const result = await chatSession.sendMessage(InputPrompt);
-    const MockJsonResp = result.response
-      .text()
-      .replace("```json", "")
-      .replace("```", "");
     // console.log(JSON.parse(MockJsonResp));
-    setJsonResponse(MockJsonResp);
 
-    const data: MockInterviewType = {
-      mockId: uuidv4(),
-      jsonMockResp: MockJsonResp,
+    const data = {
       jobPosition: jobPosition!,
       jobDesc: jobDesc!,
       jobExperience: jobExperience!,
       createdBy: user?.primaryEmailAddress?.emailAddress || "",
       createdAt: moment().format("DD-MM-yyyy"),
     };
-    if (MockJsonResp) {
-      const { result } = await createInterview(JSON.stringify(data));
-      console.log("Inserted id", result);
-      if (result) {
-        setOpenDialog(false);
-        router.push("/dashboard/interview/" + result[0]?.mockId);
+    try {
+      const resp = await createInterview(JSON.stringify(data));
+      if (resp) {
+        console.log("Inserted id", resp.result);
+        if (resp.result) {
+          setOpenDialog(false);
+          router.push("/dashboard/interview/" + resp.result[0]?.mockId);
+        } else {
+          toast("Something went wrong")
+        }
       }
-    } else {
-      console.log("error");
+    } catch (error) {
+      toast("Something went wrong")
     }
-
     setLoading(false);
   };
 

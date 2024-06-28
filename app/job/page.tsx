@@ -52,7 +52,7 @@ const JobSearch = () => {
             {error && <p style={{ textAlign: "center", color: "red" }}>Error fetching jobs.</p>}
             <ul style={{ listStyle: "none", padding: 0 }}>
                 {data.slice(0, visibleJobs).map((job: Job) => (
-                    <JobList job={job}/>
+                    <JobList job={job} role={role}/>
                 ))}
             </ul>
             {visibleJobs < data.length && (
