@@ -1,5 +1,6 @@
 // app/api/gemini/route.ts
 
+import { isPaid } from "@/actions/payment";
 import { createQuiz } from "@/actions/quiz";
 import { chatSession } from "@/utils/GeminiAi";
 import { NextRequest, NextResponse } from "next/server";

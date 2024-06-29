@@ -4,9 +4,11 @@ import { chatSession } from "@/utils/GeminiAi";
 import { db } from "@/utils/db";
 import { MockInterview } from "@/utils/schema";
 import { v4 as uuidv4 } from "uuid";
+import { isPaid } from "./payment";
 
-export const createInterview = async (rawdata: any) => {
+export const createInterview = async (rawdata: any,user: any) => {
   try {
+    user = JSON.parse(user)
     const data = JSON.parse(rawdata);
     const InputPrompt =
       "Job position: " +
@@ -19,12 +21,16 @@ export const createInterview = async (rawdata: any) => {
       10 +
       " most asked interview questions along with answer in json format. Give the question and answer field in json format.";
 
+    console.log(InputPrompt)
     const resp = await chatSession.sendMessage(InputPrompt);
     const MockJsonResp = resp.response
       .text()
       .replace("```json", "")
       .replace("```", "");
-
+    const havePaid = await isPaid(user);
+    if(!havePaid.possible){
+      return {apiUsed: false,msg: "Your Api Key is exhausted"}
+    }
     if (MockJsonResp) {
       const datawithGemini = {
         ...data,
@@ -35,7 +41,7 @@ export const createInterview = async (rawdata: any) => {
         .insert(MockInterview)
         .values(datawithGemini)
         .returning({ mockId: MockInterview.mockId });
-      return { result: result };
+      return { result: result,apiUsed: true,msg: "Success" };
     }
   } catch (error) {
     // throw new Error();

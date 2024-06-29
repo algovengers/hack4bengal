@@ -25,13 +25,17 @@ function JobList({ job, role }: { job: any, role: any }) {
         createdAt: moment().format("DD-MM-yyyy"),
       };
       try {
-        const resp = await createInterview(JSON.stringify(data));
+        const resp = await createInterview(JSON.stringify(data),user);
         if (resp) {
-          console.log("Inserted id", resp.result);
-          if (resp.result) {
-            router.push("/dashboard/interview/" + resp.result[0]?.mockId);
-          } else {
-            toast("Something went wrong")
+          if(!resp.apiUsed){
+            toast(resp.msg)
+          }else{
+            console.log("Inserted id", resp.result);
+            if (resp.result) {
+              router.push("/dashboard/interview/" + resp.result[0]?.mockId);
+            } else {
+              toast("Something went wrong")
+            }
           }
         }
       } catch (error) {

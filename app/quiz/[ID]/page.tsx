@@ -62,7 +62,7 @@ export default function Quiz() {
             setAttempted(true);
 
             JSON.parse(data.response.correctAnswers).forEach(
-              (answer, index) => {
+              (answer: any, index: any) => {
                 if (index === 0) setUserCorrectOption(answer);
                 setAnswerArray((prev) => ({ ...prev, [index]: answer }));
               }
@@ -102,7 +102,7 @@ export default function Quiz() {
 
   useEffect(() => {
     const userAnswer = Object.keys(answerArray)
-      .sort((a, b) => a - b)
+      .sort((a, b) => Number.parseInt(a) - Number.parseInt(b))
       .map((key) => answerArray[key]);
     let value = 0;
     userAnswer.forEach((answer, index) => {
