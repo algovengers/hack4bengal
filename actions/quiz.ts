@@ -4,6 +4,15 @@ import { db } from "@/utils/db";
 import { Quiz, QuizAnswer } from "@/utils/schema";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 
+interface QuizAnswerType {
+  user_email: string;
+  user_name: string;
+  correct_answers: string;
+  points: string;
+  time: number;
+  quiz_id: any;
+}
+
 export const createQuiz = async (data: any) => {
   try {
     const result = await db
@@ -26,7 +35,7 @@ export const getQuiz = async (quizId: string) => {
         difficulty: Quiz.difficulty,
       })
       .from(Quiz)
-      .where(eq(Quiz.id, quizId));
+      .where(eq(Quiz.id, Number(quizId)));
     return result;
   } catch (error) {
     throw new Error(JSON.stringify(error));
@@ -42,7 +51,7 @@ export const getQuizAnswer = async (quizId: string) => {
         difficulty: Quiz.difficulty,
       })
       .from(Quiz)
-      .where(eq(Quiz.id, quizId));
+      .where(eq(Quiz.id, Number(quizId)));
     return result;
   } catch (error) {
     throw new Error(JSON.stringify(error));
@@ -54,7 +63,7 @@ export const submitQuiz = async (
   userName: string,
   userEmail: string,
   data: any,
-  time: Number
+  time: number
 ) => {
   const quizAnswer = await getQuizAnswer(quizId);
   const correctAnswers = JSON.parse(quizAnswer[0].answers);
@@ -66,15 +75,17 @@ export const submitQuiz = async (
     }
   });
 
+  const quizAnswerData: QuizAnswerType = {
+    user_email: userEmail,
+    user_name: userName,
+    correct_answers: JSON.stringify(data),
+    points: points.toString(), // Convert points to string
+    time,
+    quiz_id: quizId,
+  };
+
   try {
-    const result = await db.insert(QuizAnswer).values({
-      userName,
-      userEmail,
-      correctAnswers: JSON.stringify(data),
-      quizId,
-      time,
-      points,
-    });
+    const result = await db.insert(QuizAnswer).values(quizAnswerData);
     return { result, correctAnswers };
   } catch (error) {
     throw new Error(JSON.stringify(error));
@@ -82,7 +93,7 @@ export const submitQuiz = async (
 };
 
 export const fetchQuizAnswerofUser = async (
-  quizId: Number,
+  quizId: number,
   userEmail: string
 ) => {
   try {

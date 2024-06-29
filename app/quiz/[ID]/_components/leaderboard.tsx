@@ -13,7 +13,11 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 
-export default function Leaderboard({ leaderboardData }) {
+interface leaderboardInterface {
+  leaderboardData: any;
+}
+
+export default function Leaderboard({ leaderboardData }: leaderboardInterface) {
   //{userName, points, time}
   return (
     <div className="w-full max-w-4xl mx-auto py-12 px-4 md:px-6">
