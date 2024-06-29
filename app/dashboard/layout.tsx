@@ -1,52 +1,20 @@
-"use client";
-import React, { createContext, useState } from "react";
+import React from "react";
 import Header from "./_components/Header";
-import {
-  InterviewData,
-  MockInterviewQuestion,
-} from "./interview/[interviewId]/start/page";
+import { InterviewProvider } from "./InterviewProvider";
 
-interface InterviewContext {
-  interviewData: InterviewData | null;
-  mockInterviewQuestion: MockInterviewQuestion[];
-  activeQuestionIndex: number;
-  setInterviewData?: any;
-  setMockInterviewQuestion?: any;
-  setActiveQuestionIndex?: any;
+interface DashboardLayoutProps {
+  children: React.ReactNode;
 }
 
-export const InterviewContext = createContext<InterviewContext>(
-  {} as InterviewContext
-);
-export default function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const [interviewData, setInterviewData] = useState<InterviewData | null>(
-    null
-  );
-
-  const [mockInterviewQuestion, setMockInterviewQuestion] = useState<
-    MockInterviewQuestion[]
-  >([]);
-  const [activeQuestionIndex, setActiveQuestionIndex] = useState<number>(0);
-
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div>
       <Header />
-      <InterviewContext.Provider
-        value={{
-          interviewData,
-          mockInterviewQuestion,
-          activeQuestionIndex,
-          setActiveQuestionIndex,
-          setInterviewData,
-          setMockInterviewQuestion,
-        }}
-      >
+      <InterviewProvider>
         <div className="mx-5 md:mx-20 lg:mx-36 mt-8">{children}</div>
-      </InterviewContext.Provider>
+      </InterviewProvider>
     </div>
   );
-}
+};
+
+export default DashboardLayout;

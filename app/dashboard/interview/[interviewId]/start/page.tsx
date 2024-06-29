@@ -7,7 +7,7 @@ import RecordSection from "./_components/RecordSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getInterviewDetails } from "@/actions/dashboard";
-import { InterviewContext } from "@/app/dashboard/layout";
+import { InterviewContext } from "@/app/dashboard/InterviewProvider";
 
 export interface InterviewProps {
   params: any;
