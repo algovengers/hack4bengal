@@ -19,7 +19,7 @@ const Header = () => {
             className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
             ${path == "/dashboard" && "text-blue-500 font-bold"}`}
           >
-            Dashboard
+            Interview
           </li>
         </Link>
         <Link href="/dashboard/questions">
@@ -30,17 +30,19 @@ const Header = () => {
             Questions
           </li>
         </Link>
+        <Link href="/pricing">
         <li
           className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
-            ${path == "/dashboard//upgrade" && "text-blue-500 font-bold"}`}
-        >
-          Upgrade
+            ${path == "/pricing" && "text-blue-500 font-bold"}`}
+            >
+          Pricing
         </li>
+          </Link>
         <li
           className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
-            ${path == "/dashboard/work" && "text-blue-500 font-bold"}`}
+            ${path == "/job" && "text-blue-500 font-bold"}`}
         >
-          How it Works?
+          Jobs
         </li>
       </ul>
       <UserButton />
