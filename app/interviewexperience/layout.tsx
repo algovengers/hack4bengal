@@ -17,7 +17,7 @@ const fontBody = Inter({
   variable: "--font-body",
 });
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   return (
     <div>
       <Header />

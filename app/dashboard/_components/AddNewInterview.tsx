@@ -45,18 +45,27 @@ const AddNewInterview = () => {
       createdAt: moment().format("DD-MM-yyyy"),
     };
     try {
-      const resp = await createInterview(JSON.stringify(data));
+      console.log(data);
+      const resp = await createInterview(
+        JSON.stringify(data),
+        JSON.stringify(user)
+      );
       if (resp) {
-        console.log("Inserted id", resp.result);
-        if (resp.result) {
-          setOpenDialog(false);
-          router.push("/dashboard/interview/" + resp.result[0]?.mockId);
+        if (!resp.apiUsed) {
+          toast(resp.msg);
         } else {
-          toast("Something went wrong")
+          console.log("Inserted id", resp.result);
+          if (resp.result) {
+            setOpenDialog(false);
+            router.push("/dashboard/interview/" + resp.result[0]?.mockId);
+          } else {
+            toast("Something went wrong");
+          }
         }
       }
     } catch (error) {
-      toast("Something went wrong")
+      console.log(error);
+      toast("Something went wrong");
     }
     setLoading(false);
   };
@@ -87,6 +96,7 @@ const AddNewInterview = () => {
                     <label>Job Role/Job Position</label>
                     <Input
                       placeholder="Ex. Full Stack Developer"
+                      className="mt-2"
                       required
                       onChange={(e) => setJobPosition(e.target.value)}
                     />
@@ -95,6 +105,7 @@ const AddNewInterview = () => {
                     <label>Job Description/ Tech Stack</label>
                     <Input
                       placeholder="Ex. React, Angular, NodeJs, SQL, etc."
+                      className="mt-2"
                       required
                       onChange={(e) => setJobDesc(e.target.value)}
                     />
@@ -103,6 +114,7 @@ const AddNewInterview = () => {
                     <label>Years of Experience</label>
                     <Input
                       placeholder="Ex. 5"
+                      className="mt-2"
                       type="number"
                       max={50}
                       required

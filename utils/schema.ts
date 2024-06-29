@@ -1,6 +1,7 @@
 import { int, smallint } from "drizzle-orm/mysql-core";
 import {
   bigint,
+  boolean,
   integer,
   pgEnum,
   pgTable,
@@ -10,6 +11,14 @@ import {
   varchar,
   timestamp
 } from "drizzle-orm/pg-core";
+
+  export const UserData = pgTable("userData",{
+    id: serial("id").primaryKey(),
+    isPaidUser: boolean("isPaidUser"),
+    apiUsed: integer("apiUsed"),
+    username: varchar("username"),
+    email: varchar("email")
+  })
 
 export const MockInterview = pgTable("mockInterview", {
   id: serial("id").primaryKey(),
@@ -85,3 +94,11 @@ export interface UserAnswerType {
   createdAt: string;
 }
 
+export interface User {
+  id: number,
+  clerkId: number,
+  isPaidUser: boolean,
+  apiUsed: number,
+  username: string,
+  email: string
+}

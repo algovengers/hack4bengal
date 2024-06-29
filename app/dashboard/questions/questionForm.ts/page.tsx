@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardHeader,
@@ -26,14 +27,19 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { isPaid } from "@/actions/payment";
+import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function QuestionForm() {
   const [loading, setLoading] = useState(false);
-  const [quizLink, setQuizLink] = useState(null);
+  const [quizLink, setQuizLink] = useState<any>(null);
   const [linkCopied, setLinkCopied] = useState(false);
   const router = useRouter();
 
-  const handleFormSubmit = (e) => {
+  const {user} = useUser()
+
+  const handleFormSubmit = async(e: any) => {
     setLoading(true);
     e.preventDefault();
     const form = e.target;
@@ -42,6 +48,12 @@ export default function QuestionForm() {
     const difficultyLevel = formData.get("difficulty");
     const questionCount = formData.get("total");
 
+    const hasPaid = await isPaid(JSON.stringify(user));
+    if(!hasPaid.possible){
+      toast("Free Plan Exhausted")
+      setLoading(false)
+      return
+    }
     fetch("/api/gemini", {
       method: "POST",
       headers: {
@@ -67,7 +79,7 @@ export default function QuestionForm() {
       });
   };
 
-  const copyTextToClipboard = async (text) => {
+  const copyTextToClipboard = async (text: any) => {
     try {
       await navigator.clipboard.writeText(text);
     } catch (err) {

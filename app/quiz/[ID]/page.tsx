@@ -9,19 +9,13 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/nextjs";
 import Leaderboard from "./_components/leaderboard";
-import { Icons } from "@/components/icons";
 
 export default function Quiz() {
   const { ID } = useParams();
 
-  const [quizData, setQuizData] = useState({
-    topic: "",
-    questions: [],
-    difficulty: "",
-    numberOfQuestions: 0,
-  });
+  const [quizData, setQuizData] = useState<any>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answerArray, setAnswerArray] = useState({});
+  const [answerArray, setAnswerArray] = useState<any>(null);
   const [userCorrectOption, setUserCorrectOption] = useState("X");
   const [loading, setIsLoading] = useState(true);
   const [timeSpent, setTimeSpent] = useState(0);
@@ -80,9 +74,9 @@ export default function Quiz() {
             setAttempted(true);
 
             JSON.parse(data.response.correctAnswers).forEach(
-              (answer, index) => {
+              (answer: any, index: any) => {
                 if (index === 0) setUserCorrectOption(answer);
-                setAnswerArray((prev) => ({ ...prev, [index]: answer }));
+                setAnswerArray((prev: any) => ({ ...prev, [index]: answer }));
               }
             );
             const quizAnswers = JSON.parse(data.quizAnswers.answers);
@@ -129,18 +123,20 @@ export default function Quiz() {
   }
 
   useEffect(() => {
-    const userAnswer = Object.keys(answerArray)
-      .sort((a, b) => a - b)
-      .map((key) => answerArray[key]);
+    const userAnswer =
+      answerArray &&
+      Object.keys(answerArray)
+        .sort((a, b) => Number(a) - Number(b))
+        .map((key) => answerArray[key]);
     let value = 0;
-    userAnswer.forEach((answer, index) => {
+    userAnswer?.forEach((answer: any, index: any) => {
       if (correctAnswers[index] === answer) value++;
     });
 
     setTotalCorrect(value);
   }, [correctAnswers]);
 
-  function checkIfOptionIsCorrect(option) {
+  function checkIfOptionIsCorrect(option: any) {
     if (attempted && answerArray[currentQuestionIndex] === option) {
       if (
         correctAnswers[currentQuestionIndex] ===
@@ -293,7 +289,7 @@ export default function Quiz() {
                       answerArray[currentQuestionIndex - 1] || "X"
                     );
                     if (!attempted) {
-                      setAnswerArray((prev) => ({
+                      setAnswerArray((prev: any) => ({
                         ...prev,
                         [currentQuestionIndex]: userCorrectOption,
                       }));
@@ -314,16 +310,18 @@ export default function Quiz() {
                     ) {
                       setCurrentQuestionIndex((prev) => prev + 1);
                       setUserCorrectOption(
-                        answerArray[currentQuestionIndex + 1] || "X"
+                        (answerArray &&
+                          answerArray[currentQuestionIndex + 1]) ||
+                          "X"
                       );
                       if (!attempted) {
-                        setAnswerArray((prev) => ({
+                        setAnswerArray((prev: any) => ({
                           ...prev,
                           [currentQuestionIndex]: userCorrectOption,
                         }));
                       }
                     } else {
-                      setAnswerArray((prev) => ({
+                      setAnswerArray((prev: any) => ({
                         ...prev,
                         [currentQuestionIndex]: userCorrectOption,
                       }));

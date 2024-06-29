@@ -2,7 +2,9 @@
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import "../../../../global.css";
+
+import "../../../globals.css";
+
 
 const fontHeading = Inter({
   subsets: ["latin"],
@@ -16,7 +18,7 @@ const fontBody = Inter({
   variable: "--font-body",
 });
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   return (
     <div className={cn("antialiased", fontHeading.variable, fontBody.variable)}>
       {children}

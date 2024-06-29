@@ -1,5 +1,5 @@
 "use client";
-import { InterviewContext } from "@/app/dashboard/layout";
+import { InterviewContext } from "@/app/dashboard/InterviewProvider";
 import { Lightbulb, Volume2 } from "lucide-react";
 import React, { useContext, useState } from "react";
 
@@ -11,6 +11,7 @@ interface MockInterviewQuestion {
 }
 const QuestionSection: React.FC = () => {
   const {mockInterviewQuestion,activeQuestionIndex} = useContext(InterviewContext)
+  console.log(mockInterviewQuestion)
   const textToSpeech = (text: string) => {
     if ("speechSynthesis" in window) {
       const speech = new SpeechSynthesisUtterance(text);

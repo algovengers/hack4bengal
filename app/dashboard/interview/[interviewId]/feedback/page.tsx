@@ -2,7 +2,7 @@
 
 import { UserAnswer } from "@/utils/schema";
 import { eq } from "drizzle-orm";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -51,6 +51,13 @@ const Feedback: React.FC<FeedbackProps> = ({ params }) => {
     alert("something went wrong")
    }
   };
+  const data = useMemo(()=>{
+    let rating = 0;
+    for(let i of feedbackList){
+      rating = rating + Number.parseInt(i.rating!)
+    }
+    return rating/(feedbackList.length ?? 1)
+  },[feedbackList])
 
   return (
     <div className="p-10">
@@ -65,7 +72,7 @@ const Feedback: React.FC<FeedbackProps> = ({ params }) => {
             Here is your interview feedback.
           </h2>
           <h2 className="text-blue-300 text-lg my-3">
-            Your overall interview rating: <strong>7/10</strong>
+            Your overall interview rating: <strong>{data}/10</strong>
           </h2>
 
           <h2 className="text-sm text-gray-500">

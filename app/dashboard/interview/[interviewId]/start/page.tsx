@@ -7,7 +7,7 @@ import RecordSection from "./_components/RecordSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getInterviewDetails } from "@/actions/dashboard";
-import { InterviewContext } from "@/app/dashboard/layout";
+import { InterviewContext } from "@/app/dashboard/InterviewProvider";
 
 export interface InterviewProps {
   params: any;
@@ -40,7 +40,7 @@ const StartInterview: React.FC<InterviewProps> = ({ params }) => {
   const GetInterViewDetails = async () => {
     try {
       const { result } = await getInterviewDetails(params.interviewId);
-
+    
       const jsonMockResp = JSON.parse(result[0].jsonMockResp);
       setMockInterviewQuestion(jsonMockResp);
       setInterviewData(result[0]);

@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const answerArray = Object.keys(body.data)
-      .sort((a, b) => a - b)
+      .sort((a, b) => Number.parseInt(a) - Number.parseInt(b))
       .map((key) => body.data[key]);
 
     const { result, correctAnswers } = await submitQuiz(
