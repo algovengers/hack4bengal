@@ -1,5 +1,8 @@
 "use client";
 import Link from "next/link";
+
+// import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,93 +15,116 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { createExperience, getExperiences } from "@/actions/experience";
 
 export default function InterviewExperience() {
+  const [isOpened, setisOpened] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [listExp, setListExp] = useState<Array<any>>([]);
+
+  async function handleSubmit(){
+    setIsLoading(true)
+    const result = await createExperience(
+      user?.fullName!,
+      user?.primaryEmailAddress?.emailAddress!,
+      title,
+      content
+    )
+    setIsLoading(false)
+  }
+
+  useEffect(()=>{
+    async function abc() {
+      
+      const datas = await getExperiences("");
+      console.log(datas)
+      setListExp(datas?.result!);
+    }
+    abc();
+  }, [])
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1 grid grid-cols-1 md:grid-cols-[1fr_300px] gap-8 p-4 md:p-6">
-        <div className="space-y-8">
-          <InterviewListCard />
-          <InterviewListCard />
-        </div>
-        <div className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>Share Your Experience</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="title">Title</Label>
-                  <Input id="title" placeholder="Enter your experience title" />
+      <div className="flex flex-col min-h-screen">
+      <main className="flex-1 gap-8 p-4 md:p-6 flex flex-col">
+      <div className="space-y-8">
+          { isOpened ?
+            (<Card>
+              <CardHeader>
+                <CardTitle>Share Your Experience</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Title</Label>
+                    <Input id="title" placeholder="Enter your experience title" 
+                      onChange={(e)=>setTitle(e.target.value)} />
+                  </div>
+                  <div>
+                    <Label htmlFor="content">Content</Label>
+                    <Textarea
+                      id="content"
+                      placeholder="Share your interview experience"
+                      className="min-h-[200px]"
+                      onChange={(e)=>setContent(e.target.value)}
+                    />
+                  </div>
+                  <div className="text-right"><Button className="w-fit" onClick={handleSubmit} disabled={isLoading}>Submit</Button></div>
                 </div>
-                <div>
-                  <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
-                    placeholder="Share your interview experience"
-                    className="min-h-[200px]"
-                  />
-                </div>
-                <Button className="w-full">Submit</Button>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+            ):( 
+              <div className="text-right"><Button onClick={()=>setisOpened(true)}>Share Your Experience</Button></div>
+            )
+          }
         </div>
+
+        <div className="space-y-8">
+          {listExp.map((item:any, idx:any) => 
+          <InterviewListCard 
+            key={idx}
+            content={item.content} 
+            title={item.title} 
+            createdAt={item.createdAt} 
+            fullname={item.userName} 
+            email={item.userEmail} 
+          />
+          )}
+        </div>
+        
       </main>
     </div>
-  );
+  )
 }
 
-function InterviewListCard() {
+function InterviewListCard({content, createdAt, fullname, title, email }: any) {
   const [isOpened, setisOpened] = useState(false);
-  const content = `I recently had the opportunity to interview for a software
-            engineering position at Acme Inc, and I wanted to share my
-            experience with you. The interview process was both challenging and
-            rewarding, and I learned a lot about myself and the company along
-            the way. I recently had the opportunity to interview for a product management
-            position at Globex Corporation, and I wanted to share my experience
-            with you. The interview process was both challenging and rewarding,
-            and I learned a lot about myself and the company along the way.The first step in the process was a phone screening with the
-            recruiter. They asked me about my background, my experience, and my
-            interest in the role. I felt that I was able to articulate my
-            qualifications well and demonstrate my enthusiasm for the position. The next step was an on-site interview with the hiring manager and
-            the product team. This was the most challenging part of the process,
-            as they asked me a series of complex questions about product
-            strategy, user research, and project management. I found that I was
-            able to draw on my experience in the field and my analytical skills
-            to successfully navigate the interview. The next step was an on-site interview with the hiring manager and
-            the product team. This was the most challenging part of the process,
-            as they asked me a series of complex questions about product
-            strategy, user research, and project management. I found that I was
-            able to draw on my experience in the field and my analytical skills
-            to successfully navigate the interview. The final step was a presentation to the executive team. They asked
-            me to present a product roadmap and strategy for a new initiative. I
-            felt that I was able to demonstrate my strategic thinking, my
-            communication skills, and my alignment with the company's vision. Overall, I found the interview process to be a valuable learning
-            experience. It challenged me to think critically, communicate
-            effectively, and showcase my skills in a high-pressure environment.
-            While the process was challenging, I ultimately felt that it was a
-            positive experience that helped me to grow as a professional.`;
+
+  let options = { year: 'numeric', month: 'long', day: 'numeric' };
+  let formattedDate = createdAt.toLocaleDateString('en-US', options);
+  
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center gap-4">
           <div>
-            <div className="font-medium">John Doe</div>
+            <div className="font-medium">{fullname} <span className=" text-muted-foreground italic">({email})</span></div>
             <div className="text-sm text-muted-foreground">
-              Published on June 29, 2024
+              Posted on {formattedDate?.toString()}
             </div>
           </div>
         </div>
       </CardHeader>
       <CardContent>
         <div className="prose prose-lg dark:prose-invert">
-          <h1 className=" text-3xl font-bold mb-6">
-            My Interview Experience at Acme Inc
+          <h1 className=" text-2xl font-bold mb-3">
+            {title}
           </h1>
-          <p>{isOpened ? content : content.slice(0, 200) + ` ......`}</p>
+          <p>{isOpened ? content : content?.slice(0, 200) + ` ......`}</p>
         </div>
       </CardContent>
       {isOpened ? (
@@ -123,7 +149,7 @@ function InterviewListCard() {
           <Button
             onClick={() => setisOpened(true)}
             className="w-fit px-6"
-            variant="ghost"
+            variant="outline"
           >
             Read More
           </Button>

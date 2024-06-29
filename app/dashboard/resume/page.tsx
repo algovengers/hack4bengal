@@ -99,7 +99,7 @@ const Resume = () => {
       const formData = new FormData();
       formData.append('file', files[0]);
 
-      const {data} = await axios.post("http://localhost:3002/analyse", formData, {
+      const {data} = await axios.post(`${process.env.NEXT_PUBLIC_RESUME_URL}/analyse`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

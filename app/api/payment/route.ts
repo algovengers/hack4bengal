@@ -25,9 +25,9 @@ export async function POST(
           price_data: {
             currency: "usd",
             product_data: {
-              name: "3moplan",
+              name: "MockMate Pro",
             },
-            unit_amount: 100,
+            unit_amount: 500,
           },
           quantity: 1,
         }

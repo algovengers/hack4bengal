@@ -9,6 +9,7 @@ import {
   text,
   uuid,
   varchar,
+  timestamp
 } from "drizzle-orm/pg-core";
 
   export const UserData = pgTable("userData",{
@@ -59,6 +60,15 @@ export const QuizAnswer = pgTable("quizAnswer", {
   points: varchar("points"),
   time: integer("time"),
   quizId: integer("quiz_id").references(() => Quiz.id),
+});
+
+export const interviewExperience = pgTable('interviewexperience', {
+  interviewId: serial('id').primaryKey(),
+  title: varchar('title').notNull(),
+  content: varchar('content').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  userEmail: varchar("userEmail"),
+  userName: varchar("userName"),
 });
 
 export interface MockInterviewType {
