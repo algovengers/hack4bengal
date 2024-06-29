@@ -11,6 +11,7 @@ interface MockInterviewQuestion {
 }
 const QuestionSection: React.FC = () => {
   const {mockInterviewQuestion,activeQuestionIndex} = useContext(InterviewContext)
+  console.log(mockInterviewQuestion)
   const textToSpeech = (text: string) => {
     if ("speechSynthesis" in window) {
       const speech = new SpeechSynthesisUtterance(text);

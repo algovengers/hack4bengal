@@ -21,17 +21,18 @@ export const createInterview = async (rawdata: any,user: any) => {
       10 +
       " most asked interview questions along with answer in json format. Give the question and answer field in json format.";
 
+      const havePaid = await isPaid(JSON.stringify(user));
+  
+      if(!havePaid.possible){
+        return {apiUsed: false,msg: "Your Api Key is exhausted"}
+      }
     console.log(InputPrompt)
     const resp = await chatSession.sendMessage(InputPrompt);
     const MockJsonResp = resp.response
       .text()
       .replace("```json", "")
       .replace("```", "");
-    const havePaid = await isPaid(JSON.stringify(user));
-
-    if(!havePaid.possible){
-      return {apiUsed: false,msg: "Your Api Key is exhausted"}
-    }
+      console.log(resp)
     if (MockJsonResp) {
       const datawithGemini = {
         ...data,

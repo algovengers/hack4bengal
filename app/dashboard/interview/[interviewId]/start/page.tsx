@@ -40,7 +40,7 @@ const StartInterview: React.FC<InterviewProps> = ({ params }) => {
   const GetInterViewDetails = async () => {
     try {
       const { result } = await getInterviewDetails(params.interviewId);
-
+    
       const jsonMockResp = JSON.parse(result[0].jsonMockResp);
       setMockInterviewQuestion(jsonMockResp);
       setInterviewData(result[0]);
