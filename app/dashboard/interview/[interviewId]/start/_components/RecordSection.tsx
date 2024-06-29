@@ -1,6 +1,6 @@
 "use client";
 import { updateAnswer } from "@/actions/answer";
-import { InterviewContext } from "@/app/dashboard/layout";
+import { InterviewContext } from "@/app/dashboard/InterviewProvider";
 import { Button } from "@/components/ui/button";
 // import { chatSession } from "@/utils/GeminiAi";
 import { MockInterviewType, UserAnswer, UserAnswerType } from "@/utils/schema";

@@ -1,5 +1,5 @@
 "use client";
-import { InterviewContext } from "@/app/dashboard/layout";
+import { InterviewContext } from "@/app/dashboard/InterviewProvider";
 import { Lightbulb, Volume2 } from "lucide-react";
 import React, { useContext, useState } from "react";
 
