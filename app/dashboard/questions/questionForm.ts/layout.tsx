@@ -2,7 +2,7 @@
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
-import "../../../../global.css";
+import "../../../global.css";
 
 const fontHeading = Inter({
   subsets: ["latin"],
