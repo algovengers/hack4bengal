@@ -9,10 +9,15 @@ export async function POST(req: NextRequest) {
   const userId = body.userId;
 
   const data = await getQuiz(ID);
-  const response = await fetchQuizAnswerofUser(ID, userId);
+  const response = await fetchQuizAnswerofUser(Number(ID), userId);
+
+  console.log(response);
+  console.log(data);
 
   if (response.length > 0) {
     const quizAnswers = await getQuizAnswer(ID);
+    console.log(quizAnswers);
+
     return NextResponse.json(
       data.length > 0
         ? {
@@ -22,11 +27,13 @@ export async function POST(req: NextRequest) {
             response: response[0],
             quizAnswers: quizAnswers[0],
           }
-        : "error: NO DATA FOUND"
+        : { error: "NO DATA FOUND" }
     );
   }
 
   return NextResponse.json(
-    data.length > 0 ? { success: true, data: data[0] } : "error: NO DATA FOUND"
+    data.length > 0
+      ? { success: true, data: data[0] }
+      : { error: "NO DATA FOUND" }
   );
 }

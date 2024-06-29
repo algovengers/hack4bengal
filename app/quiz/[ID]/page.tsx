@@ -4,10 +4,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@clerk/nextjs";
+import Leaderboard from "./_components/leaderboard";
+import { Icons } from "@/components/icons";
 
 export default function Quiz() {
   const { ID } = useParams();
@@ -27,6 +29,8 @@ export default function Quiz() {
   const [attempted, setAttempted] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [totalCorrect, setTotalCorrect] = useState(0);
+  const [leaderboardLoading, setLeaderboardLoading] = useState(false);
+  const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,9 +44,23 @@ export default function Quiz() {
     return () => clearInterval(timer);
   }, [attempted, loading]);
 
+  function fetchLeaderboardData() {
+    fetch(`/api/quiz/leaderboard`, {
+      method: "POST",
+      body: JSON.stringify({ id: ID }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setLeaderboardData(data.data);
+      })
+      .catch((error) => console.error("Error in leaderboard:", error))
+      .finally(() => setLeaderboardLoading(false));
+  }
+
   useEffect(() => {
     if (user?.primaryEmailAddress?.emailAddress) {
-      fetch(`/api/gemini/fetch`, {
+      setLeaderboardLoading(true);
+      fetch(`/api/quiz/fetch`, {
         method: "POST",
         body: JSON.stringify({
           userId: user?.primaryEmailAddress?.emailAddress,
@@ -57,7 +75,7 @@ export default function Quiz() {
             difficulty: data.data.difficulty,
             numberOfQuestions: JSON.parse(data.data.questions).length,
           });
-          console.log(data);
+          // console.log(data);
           if (data.attempted === true) {
             setAttempted(true);
 
@@ -72,12 +90,18 @@ export default function Quiz() {
           }
         })
         .catch((error) => console.error("Error:", error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+      fetchLeaderboardData();
     }
   }, [user]);
 
   function handleSubmission() {
     setIsLoading(true);
+    setLeaderboardLoading(true);
+
     fetch("/api/quiz/submit", {
       method: "POST",
       body: JSON.stringify({
@@ -98,6 +122,10 @@ export default function Quiz() {
       })
       .catch((error) => console.error("Error:", error))
       .finally(() => setIsLoading(false));
+
+    setTimeout(() => {
+      fetchLeaderboardData();
+    }, 5000);
   }
 
   useEffect(() => {
@@ -320,6 +348,16 @@ export default function Quiz() {
           )}
         </div>
       </div>
+      {attempted && (
+        <div className=" relative">
+          {leaderboardLoading && (
+            <div className=" absolute inset-0 grid place-items-center backdrop-blur-sm z-10">
+              <Loader className="mr-2 h-6 w-6 animate-spin backdrop-blur-sm	" />
+            </div>
+          )}
+          <Leaderboard leaderboardData={leaderboardData} />
+        </div>
+      )}
     </div>
   );
 }

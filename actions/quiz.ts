@@ -2,7 +2,7 @@
 
 import { db } from "@/utils/db";
 import { Quiz, QuizAnswer } from "@/utils/schema";
-import { eq } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 
 export const createQuiz = async (data: any) => {
   try {
@@ -82,7 +82,7 @@ export const submitQuiz = async (
 };
 
 export const fetchQuizAnswerofUser = async (
-  quizId: string,
+  quizId: Number,
   userEmail: string
 ) => {
   try {
@@ -94,9 +94,25 @@ export const fetchQuizAnswerofUser = async (
       })
       .from(QuizAnswer)
       .where(
-        eq(QuizAnswer.quizId, quizId),
-        eq(QuizAnswer.userEmail, userEmail)
+        and(eq(QuizAnswer.quizId, quizId), eq(QuizAnswer.userEmail, userEmail))
       );
+    return result;
+  } catch (error) {
+    throw new Error(JSON.stringify(error));
+  }
+};
+
+export const quizLeaderboard = async (quizId: number) => {
+  try {
+    const result = await db
+      .select({
+        userName: QuizAnswer.userName,
+        points: QuizAnswer.points,
+        time: QuizAnswer.time,
+      })
+      .from(QuizAnswer)
+      .where(eq(QuizAnswer.quizId, quizId))
+      .orderBy(desc(QuizAnswer.points), asc(QuizAnswer.time));
     return result;
   } catch (error) {
     throw new Error(JSON.stringify(error));
