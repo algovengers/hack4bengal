@@ -49,8 +49,8 @@ Generate ${questionCount} questions following this format and guidelines.`;
       result.response.text().replace("```json", "").replace("```", "")
     );
 
-    const quizAnswers = jsonResult.map((question) => question.answer);
-    const quizQuestionWithOptions = jsonResult.map((question) => ({
+    const quizAnswers = jsonResult.map((question: any) => question.answer);
+    const quizQuestionWithOptions = jsonResult.map((question: any) => ({
       question: question.question,
       options: question.options,
     }));
