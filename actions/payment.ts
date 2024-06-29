@@ -7,10 +7,11 @@ import { v4 as uuidv4 } from "uuid";
 
 
 export async function isPaid(user: any){
+    console.log(user)
     if(!user){
         throw new Error
     }
-     user = JSON.parse(user)
+    user = JSON.parse(user)
     console.log(user)
     let data;
     console.log(user.id)

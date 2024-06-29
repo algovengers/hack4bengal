@@ -27,7 +27,8 @@ export const createInterview = async (rawdata: any,user: any) => {
       .text()
       .replace("```json", "")
       .replace("```", "");
-    const havePaid = await isPaid(user);
+      console.log(MockJsonResp)
+    const havePaid = await isPaid(JSON.stringify(user));
     if(!havePaid.possible){
       return {apiUsed: false,msg: "Your Api Key is exhausted"}
     }
