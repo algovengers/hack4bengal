@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +8,7 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
-// import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -134,7 +133,7 @@ function InterviewListCard() {
   );
 }
 
-function HeartIcon(props) {
+function HeartIcon(props: any) {
   return (
     <svg
       {...props}
@@ -153,7 +152,7 @@ function HeartIcon(props) {
   );
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: any) {
   return (
     <svg
       {...props}
@@ -173,7 +172,7 @@ function HomeIcon(props) {
   );
 }
 
-function InfoIcon(props) {
+function InfoIcon(props: any) {
   return (
     <svg
       {...props}
@@ -194,7 +193,7 @@ function InfoIcon(props) {
   );
 }
 
-function LayoutGridIcon(props) {
+function LayoutGridIcon(props: any) {
   return (
     <svg
       {...props}
@@ -216,7 +215,7 @@ function LayoutGridIcon(props) {
   );
 }
 
-function MailIcon(props) {
+function MailIcon(props: any) {
   return (
     <svg
       {...props}
@@ -236,7 +235,7 @@ function MailIcon(props) {
   );
 }
 
-function MenuIcon(props) {
+function MenuIcon(props: any) {
   return (
     <svg
       {...props}
@@ -257,7 +256,7 @@ function MenuIcon(props) {
   );
 }
 
-function MessageCircleIcon(props) {
+function MessageCircleIcon(props: any) {
   return (
     <svg
       {...props}
@@ -276,7 +275,7 @@ function MessageCircleIcon(props) {
   );
 }
 
-function MountainIcon(props) {
+function MountainIcon(props: any) {
   return (
     <svg
       {...props}
@@ -295,7 +294,7 @@ function MountainIcon(props) {
   );
 }
 
-function ShareIcon(props) {
+function ShareIcon(props: any) {
   return (
     <svg
       {...props}

@@ -45,24 +45,27 @@ const AddNewInterview = () => {
       createdAt: moment().format("DD-MM-yyyy"),
     };
     try {
-      console.log(data)
-      const resp = await createInterview(JSON.stringify(data),JSON.stringify(user));
+      console.log(data);
+      const resp = await createInterview(
+        JSON.stringify(data),
+        JSON.stringify(user)
+      );
       if (resp) {
-        if(!resp.apiUsed){
-          toast(resp.msg)
-        }else{
+        if (!resp.apiUsed) {
+          toast(resp.msg);
+        } else {
           console.log("Inserted id", resp.result);
           if (resp.result) {
             setOpenDialog(false);
             router.push("/dashboard/interview/" + resp.result[0]?.mockId);
           } else {
-            toast("Something went wrong")
+            toast("Something went wrong");
           }
         }
       }
     } catch (error) {
-      console.log(error)
-      toast("Something went wrong")
+      console.log(error);
+      toast("Something went wrong");
     }
     setLoading(false);
   };

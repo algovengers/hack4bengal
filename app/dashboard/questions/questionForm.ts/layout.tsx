@@ -16,7 +16,7 @@ const fontBody = Inter({
   variable: "--font-body",
 });
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   return (
     <div className={cn("antialiased", fontHeading.variable, fontBody.variable)}>
       {children}
