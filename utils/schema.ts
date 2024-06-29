@@ -8,6 +8,7 @@ import {
   text,
   uuid,
   varchar,
+  timestamp
 } from "drizzle-orm/pg-core";
 
 export const MockInterview = pgTable("mockInterview", {
@@ -52,6 +53,15 @@ export const QuizAnswer = pgTable("quizAnswer", {
   quizId: integer("quiz_id").references(() => Quiz.id),
 });
 
+export const interviewExperience = pgTable('interviewexperience', {
+  interviewId: serial('id').primaryKey(),
+  title: varchar('title').notNull(),
+  content: varchar('content').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  userEmail: varchar("userEmail"),
+  userName: varchar("userName"),
+});
+
 export interface MockInterviewType {
   id?: number;
   jsonMockResp: string;
@@ -74,3 +84,4 @@ export interface UserAnswerType {
   userEmail: string;
   createdAt: string;
 }
+
