@@ -172,7 +172,7 @@ export default function Quiz() {
               <div className="flex items-center justify-between mb-6">
                 <div className="text-sm text-muted-foreground">
                   Question {currentQuestionIndex + 1} of{" "}
-                  {quizData.numberOfQuestions}
+                  {quizData?.numberOfQuestions}
                 </div>
                 <div className="text-sm text-muted-foreground">
                   Time Spent:{" "}
@@ -191,7 +191,7 @@ export default function Quiz() {
               )}
               <div className="bg-card rounded-lg p-6 shadow">
                 <h2 className="text-2xl font-bold mb-4 text-justify">
-                  {quizData.questions[currentQuestionIndex]?.question}
+                  {quizData?.questions[currentQuestionIndex]?.question}
                 </h2>
                 <div className="flex flex-col gap-4">
                   <Button
@@ -209,7 +209,7 @@ export default function Quiz() {
                     }}
                   >
                     <span className="flex-1 text-justify">
-                      {quizData.questions[currentQuestionIndex]?.options["A"]}
+                      {quizData?.questions[currentQuestionIndex]?.options["A"]}
                     </span>
                     {userCorrectOption === "A" && (
                       <CheckIcon className=" ml-4 h-5 w-5 text-primary " />
@@ -230,7 +230,7 @@ export default function Quiz() {
                     }}
                   >
                     <span className="flex-1 text-justify">
-                      {quizData.questions[currentQuestionIndex]?.options["B"]}
+                      {quizData?.questions[currentQuestionIndex]?.options["B"]}
                     </span>
                     {userCorrectOption === "B" && (
                       <CheckIcon className=" ml-4 h-5 w-5 text-primary " />
@@ -251,7 +251,7 @@ export default function Quiz() {
                     }}
                   >
                     <span className="flex-1 text-justify">
-                      {quizData.questions[currentQuestionIndex]?.options["C"]}
+                      {quizData?.questions[currentQuestionIndex]?.options["C"]}
                     </span>
                     {userCorrectOption === "C" && (
                       <CheckIcon className=" ml-4 h-5 w-5 text-primary " />
@@ -272,7 +272,7 @@ export default function Quiz() {
                     }}
                   >
                     <span className="flex-1 text-justify">
-                      {quizData.questions[currentQuestionIndex]?.options["D"]}
+                      {quizData?.questions[currentQuestionIndex]?.options["D"]}
                     </span>
                     {userCorrectOption === "D" && (
                       <CheckIcon className=" ml-4 h-5 w-5 text-primary " />
@@ -331,10 +331,10 @@ export default function Quiz() {
                   }}
                   disabled={
                     attempted &&
-                    currentQuestionIndex === quizData.numberOfQuestions - 1
+                    currentQuestionIndex === quizData?.numberOfQuestions - 1
                   }
                 >
-                  {currentQuestionIndex === quizData.numberOfQuestions - 1
+                  {currentQuestionIndex === quizData?.numberOfQuestions - 1
                     ? "Submit"
                     : attempted ||
                       (userCorrectOption && userCorrectOption !== "X")
