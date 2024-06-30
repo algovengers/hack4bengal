@@ -36,16 +36,20 @@ export default function InterviewExperience() {
       content
     )
     setIsLoading(false)
+    fetchdata()
+    setTitle("");
+    setContent("");
+    setisOpened(false);
+  }
+
+  async function fetchdata() {
+    const datas = await getExperiences("");
+    console.log(datas)
+    setListExp(datas?.result!);
   }
 
   useEffect(()=>{
-    async function abc() {
-      
-      const datas = await getExperiences("");
-      console.log(datas)
-      setListExp(datas?.result!);
-    }
-    abc();
+    fetchdata();
   }, [])
 
   return (
