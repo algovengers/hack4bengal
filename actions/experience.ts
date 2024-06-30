@@ -6,26 +6,27 @@ import { or, ilike, desc } from "drizzle-orm";
 
 export const getExperiences = async(searchPattern: string)=>{
   try {
-    if(searchPattern?.trim() === ""){
+    console.log(searchPattern)
+    // if(searchPattern?.trim() === ""){
         const result = await db
         .select()
         .from(interviewExperience)
         .orderBy(desc(interviewExperience.createdAt));
         console.log(result)
         return {result  : result}
-    }
-    else{
-        const result = await db
-        .select()
-        .from(interviewExperience)
-        .where(or(
-            ilike(interviewExperience.title, searchPattern),
-            ilike(interviewExperience.content, searchPattern)
-        ))
-        .orderBy(desc(interviewExperience.createdAt));
-        console.log(result)
-        return {result  : result}
-    }
+    // }
+    // else{
+    //     const result = await db
+    //     .select()
+    //     .from(interviewExperience)
+    //     .where(or(
+    //         ilike(interviewExperience.title, searchPattern),
+    //         ilike(interviewExperience.content, searchPattern)
+    //     ))
+    //     .orderBy(desc(interviewExperience.createdAt));
+    //     console.log(result)
+    //     return {result  : result}
+    // }
   } catch (error) {
     console.error(error)
   }

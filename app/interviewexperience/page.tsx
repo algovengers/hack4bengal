@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { createExperience, getExperiences } from "@/actions/experience";
+import { FiSearch } from "react-icons/fi";
 
 export default function InterviewExperience() {
   const [isOpened, setisOpened] = useState<boolean>(false);
@@ -25,7 +26,9 @@ export default function InterviewExperience() {
   const [content, setContent] = useState<string>("");
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
   const [listExp, setListExp] = useState<Array<any>>([]);
+  const listExpFiltered = listExp?.filter((x) => (x?.title?.indexOf(query) >=0) || (x?.content?.indexOf(query) >=0));
 
   async function handleSubmit(){
     setIsLoading(true)
@@ -42,8 +45,8 @@ export default function InterviewExperience() {
     setisOpened(false);
   }
 
-  async function fetchdata() {
-    const datas = await getExperiences("");
+  async function fetchdata(str:string = "") {
+    const datas = await getExperiences(str);
     console.log(datas)
     setListExp(datas?.result!);
   }
@@ -52,10 +55,15 @@ export default function InterviewExperience() {
     fetchdata();
   }, [])
 
+  // async function handleSearch() {
+  //   fetchdata(query)
+  // }
+
   return (
       <div className="flex flex-col min-h-screen">
       <main className="flex-1 gap-8 p-4 md:p-6 flex flex-col">
       <div className="space-y-8">
+          <SearchBar query={query} setQuery={setQuery} />
           { isOpened ?
             (<Card>
               <CardHeader>
@@ -88,7 +96,7 @@ export default function InterviewExperience() {
         </div>
 
         <div className="space-y-8">
-          {listExp.map((item:any, idx:any) => 
+          {listExpFiltered?.map((item:any, idx:any) => 
           <InterviewListCard 
             key={idx}
             content={item.content} 
@@ -102,6 +110,25 @@ export default function InterviewExperience() {
         
       </main>
     </div>
+  )
+}
+
+function SearchBar({query, setQuery}: any){
+  return (
+      <div className="flex items-center bg-white border border-gray-300 rounded-lg shadow-sm">
+        <input
+          type="text"
+          className="py-2 px-4 rounded-l-lg focus:outline-none w-full"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div
+          className="py-3 px-4 rounded-r-lg h-10"
+        >
+          <FiSearch />
+        </div>
+      </div>
   )
 }
 
