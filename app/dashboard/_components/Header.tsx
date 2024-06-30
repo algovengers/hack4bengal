@@ -44,6 +44,14 @@ const Header = () => {
         >
           Jobs
         </li>
+        <Link href="/interviewexperience">
+        <li
+          className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
+            ${path == "/interviewexperience" && "text-blue-500 font-bold"}`}
+            >
+          Blogs
+        </li>
+          </Link>
       </ul>
       <UserButton />
     </div>
