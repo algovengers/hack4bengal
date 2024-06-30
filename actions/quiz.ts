@@ -5,12 +5,12 @@ import { Quiz, QuizAnswer } from "@/utils/schema";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 
 interface QuizAnswerType {
-  user_email: string;
-  user_name: string;
-  correct_answers: string;
+  userEmail: string;
+  userName: string;
+  correctAnswers: string;
   points: string;
   time: number;
-  quiz_id: any;
+  quizId: any;
 }
 
 export const createQuiz = async (data: any) => {
@@ -76,16 +76,17 @@ export const submitQuiz = async (
   });
 
   const quizAnswerData: QuizAnswerType = {
-    user_email: userEmail,
-    user_name: userName,
-    correct_answers: JSON.stringify(data),
-    points: points.toString(), // Convert points to string
+    userEmail: userEmail,
+    userName: userName,
+    correctAnswers: JSON.stringify(data),
+    points: points.toString(),
     time,
-    quiz_id: quizId,
+    quizId: quizId,
   };
 
   try {
     const result = await db.insert(QuizAnswer).values(quizAnswerData);
+
     return { result, correctAnswers };
   } catch (error) {
     throw new Error(JSON.stringify(error));
