@@ -16,7 +16,7 @@ function JobList({ job, role }: { job: any, role: any }) {
   
     const router = useRouter()
     async function handleClick() {
-      setLoading(false)
+      setLoading(true)
       const data = {
         jobPosition: job.job_title!,
         jobDesc: role!,
