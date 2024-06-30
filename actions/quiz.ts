@@ -135,14 +135,19 @@ export const getALLQuizForUser = async (userEmail: string) => {
   try {
     const result = await db
       .select({
-        quizId: Quiz.id,
-        topic: Quiz.topic,
+        quizId: QuizAnswer.quizId,
+        points: QuizAnswer.points,
+        Topic: Quiz.topic,
         difficulty: Quiz.difficulty,
       })
-      .from(Quiz)
+      .from(QuizAnswer)
+      .innerJoin(Quiz, eq(Quiz.id, QuizAnswer.quizId))
       .where(eq(QuizAnswer.userEmail, userEmail));
+
     return result;
   } catch (error) {
+    console.log("FUKKKKKKKKKKKKKKKKKKKKKKKK ______>", error);
+
     throw new Error(JSON.stringify(error));
   }
 };
