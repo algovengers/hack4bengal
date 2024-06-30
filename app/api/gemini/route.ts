@@ -64,6 +64,8 @@ Generate ${questionCount} questions following this format and guidelines.`;
       totalQuestion: jsonResult.length,
     };
 
+    // console.log(data);
+
     const { quizId } = await createQuiz(data);
 
     return NextResponse.json(quizId);
