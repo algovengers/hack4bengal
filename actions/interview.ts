@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { isPaid } from "./payment";
 
 export const createInterview = async (rawdata: any,user: any) => {
+  console.log(rawdata,user)
   try {
     user = JSON.parse(user)
     const data = JSON.parse(rawdata);
