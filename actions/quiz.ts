@@ -129,3 +129,19 @@ export const quizLeaderboard = async (quizId: number) => {
     throw new Error(JSON.stringify(error));
   }
 };
+
+export const getALLQuizForUser = async (userEmail: string) => {
+  try {
+    const result = await db
+      .select({
+        quizId: Quiz.id,
+        topic: Quiz.topic,
+        difficulty: Quiz.difficulty,
+      })
+      .from(Quiz)
+      .where(eq(QuizAnswer.userEmail, userEmail));
+    return result;
+  } catch (error) {
+    throw new Error(JSON.stringify(error));
+  }
+};
