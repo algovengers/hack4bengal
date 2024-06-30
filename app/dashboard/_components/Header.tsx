@@ -22,6 +22,14 @@ const Header = () => {
             Interview
           </li>
         </Link>
+        <Link href="/dashboard/resume">
+        <li
+          className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
+            ${path == "/dashboard/resume" && "text-blue-500 font-bold"}`}
+            >
+          CV Score
+        </li>
+          </Link>
         <Link href="/dashboard/questions">
           <li
             className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 

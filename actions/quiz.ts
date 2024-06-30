@@ -133,6 +133,7 @@ export const quizLeaderboard = async (quizId: number) => {
 
 export const getALLQuizForUser = async (userEmail: string) => {
   try {
+    console.log(userEmail)
     const result = await db
       .select({
         quizId: QuizAnswer.quizId,
