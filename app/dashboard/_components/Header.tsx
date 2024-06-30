@@ -10,7 +10,7 @@ const Header = () => {
   useEffect(() => {}, []);
 
   return (
-    <div className="flex p-4 items-center justify-between bg-gray-200 shadow-md">
+    <div className="flex p-4 w-[99vw] items-center justify-between bg-gray-200 shadow-md">
       <Image src={"/logo.svg"} width={40} height={40} alt="logo" />
 
       <ul className="hidden md:flex gap-6">
@@ -38,12 +38,14 @@ const Header = () => {
           Pricing
         </li>
           </Link>
+          <Link href='/job'>
         <li
           className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 
             ${path == "/job" && "text-blue-500 font-bold"}`}
-        >
+            >
           Jobs
         </li>
+        </Link>
         <Link href="/interviewexperience">
         <li
           className={`hover:text-blue-500 hover:font-bold transition-all cursor-pointer 

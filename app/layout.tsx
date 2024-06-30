@@ -19,8 +19,8 @@ export default function RootLayout({
   return (
     <ClerkProvider >
     <html lang="en">
-      <body className="">
-      <div className="mx-auto max-w-screen-xl h-full w-full">
+      <body className="w-full overflow-x-hidden">
+      <div className=" h-full w-screen">
         <Toaster />
         {children}
       </div>

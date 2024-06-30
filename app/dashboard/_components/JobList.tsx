@@ -25,7 +25,8 @@ function JobList({ job, role }: { job: any, role: any }) {
         createdAt: moment().format("DD-MM-yyyy"),
       };
       try {
-        const resp = await createInterview(JSON.stringify(data),user);
+        console.log("here")
+        const resp = await createInterview(JSON.stringify(data),JSON.stringify(user));
         if (resp) {
           if(!resp.apiUsed){
             toast(resp.msg)
@@ -39,6 +40,7 @@ function JobList({ job, role }: { job: any, role: any }) {
           }
         }
       } catch (error) {
+        console.log(error)
         toast("Something went wrong")
       } finally {
         setLoading(false)
@@ -76,7 +78,9 @@ function JobList({ job, role }: { job: any, role: any }) {
               Experience - {job.job_required_experience.required_experience_in_months / 12} years
               </p>
             </div>
-            <div className="mt-8 gap-2">
+            <div className='flex justify-between flex-row'>
+
+            <div className="mt-8 gap-2 flex justify-between">
               <Button>
                 <a href={job.job_apply_link} target="_blank" rel="noopener noreferrer">
                   Apply
@@ -85,11 +89,7 @@ function JobList({ job, role }: { job: any, role: any }) {
   <div>{
     !!isLoading ? <Button disabled>Loading</Button> : <Button onClick={handleClick}>Mock Interview</Button>
   }</div>
-              <Button>
-                <a >
-                  Try Mock
-                </a>
-              </Button>
+  </div>
             </div>
             <button className="absolute top-4 right-4 rounded-lg border-2 border-gray-800 bg-gray-100 p-2 text-gray-900 hover:bg-green-100 hover:text-green-700">
               <svg
